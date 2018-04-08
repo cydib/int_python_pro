@@ -1,0 +1,565 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Guest Manage System Interface Test Report</title>
+    <meta name="generator" content="HTMLTestRunner 0.8.2"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.0/css/bootstrap.min.css">
+    <script src="http://cdn.bootcss.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+    <script src="http://apps.bdimg.com/libs/Chart.js/0.2.0/Chart.min.js"></script>
+    <!-- <link href="https://cdn.bootcss.com/echarts/3.8.5/echarts.common.min.js" rel="stylesheet">   -->
+    
+    
+<style type="text/css" media="screen">
+body        { font-family: verdana, arial, helvetica, sans-serif; font-size: 80%; }
+table       { font-size: 100%; }
+pre         {  }
+
+/* -- heading ---------------------------------------------------------------------- */
+h1 {
+	font-size: 16pt;
+	color: gray;
+}
+.heading {
+    margin-top: 0ex;
+    margin-bottom: 1ex;
+	margin-left: 10px;
+}
+
+.heading .attribute {
+    margin-top: 1ex;
+    margin-bottom: 0;
+}
+
+.heading .description {
+    margin-top: 4ex;
+    margin-bottom: 6ex;
+}
+
+/* -- css div popup ------------------------------------------------------------------------ */
+a.popup_link {
+}
+
+a.popup_link:hover {
+    color: red;
+}
+
+.popup_window {
+    display: none;
+    position: relative;
+    left: 0px;
+    top: 0px;
+    /*border: solid #627173 1px; */
+    font-family: "Lucida Console", "Courier New", Courier, monospace;
+    text-align: left;
+    font-size: 8pt;
+    width: 500px;
+}
+
+}
+/* -- report ------------------------------------------------------------------------ */
+#show_detail_line {
+    margin-top: 3ex;
+    margin-bottom: 1ex;
+    margin-left: 10px;
+}
+#result_table {
+    width: 80%;
+    border-collapse: collapse;
+    border: 1px solid #777;
+    margin-left: 10px;
+}
+#header_row {
+    font-weight: bold;
+    color: #606060;
+    background-color: #f5f5f5;
+    border-top-width: 10px;
+    border-color: #d6e9c6;
+	font-size: 12px;
+}
+#result_table td {
+    border: 1px solid #f5f5f5;
+    padding: 2px;
+
+}
+#total_row  { font-weight: bold; }
+.passClass  { background-color: #d6e9c6; }
+.failClass  { background-color: #faebcc; }
+.errorClass { background-color: #ebccd1; }
+.passCase   { color: #6c6; }
+.failCase   { color: #c60; font-weight: bold; }
+.errorCase  { color: #c00; font-weight: bold; }
+.hiddenRow  { display: none; }
+.testcase   { margin-left: 2em; }
+
+
+/* -- ending ---------------------------------------------------------------------- */
+#ending {
+}
+
+/* -- chars ---------------------------------------------------------------------- */
+.testChars {margin-left: 150px;}
+
+.btn-info1 {
+    color: #fff;
+    background-color: #d6e9c6;
+    border-color: #d6e9c6;
+}
+
+.btn-info2 {
+    color: #fff;
+    background-color: #faebcc;
+    border-color: #faebcc;
+}
+
+.btn-info3 {
+    color: #fff;
+    background-color: #ebccd1;
+    border-color: #ebccd1;
+}
+</style>
+
+</head>
+<body>
+<script language="javascript" type="text/javascript"><!--
+output_list = Array();
+
+/* level - 0:Summary; 1:Failed; 2:All */
+function showCase(level) {
+    trs = document.getElementsByTagName("tr");
+    for (var i = 0; i < trs.length; i++) {
+        tr = trs[i];
+        id = tr.id;
+        if (id.substr(0,2) == 'ft') {
+            if (level < 1) {
+                tr.className = 'hiddenRow';
+            }
+            else {
+                tr.className = '';
+            }
+        }
+        if (id.substr(0,2) == 'pt') {
+            if (level > 1) {
+                tr.className = '';
+            }
+            else {
+                tr.className = 'hiddenRow';
+            }
+        }
+    }
+}
+
+
+function showClassDetail(cid, count) {
+    var id_list = Array(count);
+    var toHide = 1;
+    for (var i = 0; i < count; i++) {
+        tid0 = 't' + cid.substr(1) + '.' + (i+1);
+        tid = 'f' + tid0;
+        tr = document.getElementById(tid);
+        if (!tr) {
+            tid = 'p' + tid0;
+            tr = document.getElementById(tid);
+        }
+        id_list[i] = tid;
+        if (tr.className) {
+            toHide = 0;
+        }
+    }
+    for (var i = 0; i < count; i++) {
+        tid = id_list[i];
+        if (toHide) {
+            document.getElementById('div_'+tid).style.display = 'none'
+            document.getElementById(tid).className = 'hiddenRow';
+        }
+        else {
+            document.getElementById(tid).className = '';
+        }
+    }
+}
+
+
+function showTestDetail(div_id){
+    var details_div = document.getElementById(div_id)
+    var displayState = details_div.style.display
+    // alert(displayState)
+    if (displayState != 'block' ) {
+        displayState = 'block'
+        details_div.style.display = 'block'
+    }
+    else {
+        details_div.style.display = 'none'
+    }
+}
+
+
+function html_escape(s) {
+    s = s.replace(/&/g,'&amp;');
+    s = s.replace(/</g,'&lt;');
+    s = s.replace(/>/g,'&gt;');
+    return s;
+}
+
+/* obsoleted by detail in <div>
+function showOutput(id, name) {
+    var w = window.open("", //url
+                    name,
+                    "resizable,scrollbars,status,width=800,height=450");
+    d = w.document;
+    d.write("<pre>");
+    d.write(html_escape(output_list[id]));
+    d.write("\n");
+    d.write("<a href='javascript:window.close()'>close</a>\n");
+    d.write("</pre>\n");
+    d.close();
+}
+*/
+--></script>
+
+<div class='heading'>
+<h1>Guest Manage System Interface Test Report</h1>
+<p class='attribute'><strong>Start Time:</strong> 2018-04-08 17:49:49</p>
+<p class='attribute'><strong>Duration:</strong> 0:01:37.590215</p>
+<p class='attribute'><strong>Status:</strong> Pass 7 Failure 1</p>
+
+<p class='description'>Implementation Example with:</p>
+</div>
+
+<div style="float:left; margin-left: 10px;">
+	<p> Test Case Pie charts </p>
+	<a class="btn btn-xs btn-info1">-Pass-</a><br>
+	<a class="btn btn-xs btn-info2">-Faild-</a><br>
+	<a class="btn btn-xs btn-info3">-Error-</a><br>
+</div>
+
+<div class="testChars">
+	<canvas id="myChart" width="250" height="250"></canvas>
+</div>
+
+
+
+<p id='show_detail_line' style="margin-left: 10px;">Show
+<a href='javascript:showCase(0)' class="btn btn-xs btn-primary">Summary</a>
+<a href='javascript:showCase(1)' class="btn btn-xs btn-danger">Failed</a>
+<a href='javascript:showCase(2)' class="btn btn-xs btn-info">All</a>
+</p>
+<table id='result_table'>
+<colgroup>
+<col align='left' />
+<col align='right' />
+<col align='right' />
+<col align='right' />
+<col align='right' />
+<col align='right' />
+</colgroup>
+<tr id='header_row' class="panel-title">
+    <td>Test Group/Test case</td>
+    <td>Count</td>
+    <td>Pass</td>
+    <td>Fail</td>
+    <td>Error</td>
+    <td>View</td>
+</tr>
+
+<tr class='failClass'>
+    <td>Test_interface_py_cm.Test_interface_py_cm</td>
+    <td>4</td>
+    <td>3</td>
+    <td>1</td>
+    <td>0</td>
+    <td><a href="javascript:showClassDetail('c1',4)">Detail</a></td>
+</tr>
+
+<tr id='pt1.1' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test1_0</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt1.1')" >
+        pass</a>
+
+    <div id='div_pt1.1' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt1.1').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt1.1: &lt;&lt;&lt;&lt;&lt;&lt; start test &gt;&gt;&gt;&gt;&gt;&gt;
+{'data': [{'id': '58645', 'timesSize': 8, 'faceSize': 314, 'faceUrl': '/ifstore011241/M00/01/E9/wKgL8VqeEjOIZe1eAAAU1nPaFOEAAD-bwCIT9oAABTu390.jpg'}], 'errCode': 0, 'maxPage': 11486, 'total': 11486}
+&lt;&lt;&lt;&lt;&lt;&lt; end test &gt;&gt;&gt;&gt;&gt;&gt;
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt1.2' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test1_1</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt1.2')" >
+        pass</a>
+
+    <div id='div_pt1.2' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt1.2').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt1.2: &lt;&lt;&lt;&lt;&lt;&lt; start test &gt;&gt;&gt;&gt;&gt;&gt;
+{'data': [{'id': '58645', 'timesSize': 8, 'faceSize': 314, 'faceUrl': '/ifstore011241/M00/01/E9/wKgL8VqeEjOIZe1eAAAU1nPaFOEAAD-bwCIT9oAABTu390.jpg'}, {'id': '58653', 'timesSize': 9, 'faceSize': 1107, 'faceUrl': '/ifstore011241/M00/01/E9/wKgL8VqeEiGIZ6eGAAAmq_qn4tkAAD-bwBlYLIAACbD583.jpg'}, {'id': '58655', 'timesSize': 3, 'faceSize': 5, 'faceUrl': '/ifstore011241/M00/01/EE/wKgL8VqkqZuIPdoXAAAfJgAFrcEAAEAJQEvfPYAAB8-706.jpg'}, {'id': '58657', 'timesSize': 9, 'faceSize': 196, 'faceUrl': '/ifstore011241/M00/01/E8/wKgL8VqaHeeIXGl8AAAS__0V-fgAAD9rgNFD48AABMX089.jpg'}, {'id': '58661', 'timesSize': 5, 'faceSize': 6, 'faceUrl': '/ifstore011241/M00/01/EA/wKgL8VqfY52ILsiBAAAnoOhapRwAAD-xwAxQAcAACe4603.jpg'}, {'id': '58662', 'timesSize': 4, 'faceSize': 9, 'faceUrl': '/ifstore011241/M00/01/E9/wKgL8VqeEhmINemAAAAh_gewPvsAAD-bwBSC0QAACIW036.jpg'}, {'id': '58663', 'timesSize': 6, 'faceSize': 182, 'faceUrl': '/ifstore011241/M00/01/ED/wKgL8VqjWC2IVW9fAAAYFnUJaaIAAD_vwELsWYAABgu256.jpg'}, {'id': '58665', 'timesSize': 2, 'faceSize': 6, 'faceUrl': '/ifstore011241/M00/01/EE/wKgL8VqkqZSID_JnAAAPjLW4WkYAAEAJQEFMXwAAA-k144.jpg'}, {'id': '58668', 'timesSize': 3, 'faceSize': 4, 'faceUrl': '/ifstore011241/M00/01/EA/wKgL8VqfY7SIGpx4AABTcH5gdM8AAD-xwB_FzkAAFOI634.jpg'}, {'id': '58669', 'timesSize': 9, 'faceSize': 1064, 'faceUrl': '/ifstore011241/M00/01/EF/wKgL8Vql-y6IbDmVAAAg2-QWm6EAAEAewEej7oAACDz969.jpg'}, {'id': '58672', 'timesSize': 6, 'faceSize': 55, 'faceUrl': '/ifstore011241/M00/01/EC/wKgL8VqiBvGIChUlAAAdHDMp0swAAD_ZwOxOQoAAB00725.jpg'}, {'id': '58675', 'timesSize': 2, 'faceSize': 2, 'faceUrl': '/ifstore011241/M00/01/EE/wKgL8VqkqcmIYVtGAAAajoLCqNYAAEAJQGYBqsAABqm362.jpg'}, {'id': '58676', 'timesSize': 5, 'faceSize': 61, 'faceUrl': '/ifstore011241/M00/01/E9/wKgL8VqeEj6IfC3DAABE2RB7_RoAAD-bwCup4oAAETx480.jpg'}, {'id': '58677', 'timesSize': 3, 'faceSize': 4, 'faceUrl': '/ifstore011241/M00/01/EB/wKgL8VqgtTuIS8u0AAAsUwSEJFwAAD_DgL7JW4AACxr780.jpg'}, {'id': '58680', 'timesSize': 7, 'faceSize': 272, 'faceUrl': '/ifstore011241/M00/01/E9/wKgL8VqeEheIJmwyAAArHrd4ASQAAD-bwBGuZIAACs2141.jpg'}, {'id': '58684', 'timesSize': 7, 'faceSize': 57, 'faceUrl': '/ifstore011241/M00/01/E8/wKgL8VqaHfyIMjLMAAAVA6ueuLUAAD9rgOoVSEAABUb373.jpg'}, {'id': '58688', 'timesSize': 4, 'faceSize': 4, 'faceUrl': '/ifstore011241/M00/01/ED/wKgL8VqjWESIfVPrAAAJrnSDkfsAAD_vwFWa_4AAAnG331.jpg'}, {'id': '58692', 'timesSize': 2, 'faceSize': 2, 'faceUrl': '/ifstore011241/M00/01/EA/wKgL8VqfZAOICm6GAAA2Pn_ZFW0AAD-xwFuFJoAADZW911.jpg'}, {'id': '58694', 'timesSize': 7, 'faceSize': 84, 'faceUrl': '/ifstore011241/M00/01/EE/wKgL8VqkqbqIWDyaAAAbAFSy0e0AAEAJQF2n1AAABsY613.jpg'}, {'id': '58696', 'timesSize': 2, 'faceSize': 7, 'faceUrl': '/ifstore011241/M00/01/EF/wKgL8Vql-0WIYZYPAAAW3lPUxHUAAEAewFRgpkAABb2278.jpg'}, {'id': '58704', 'timesSize': 7, 'faceSize': 199, 'faceUrl': '/ifstore011241/M00/01/EF/wKgL8Vql-16Ie8BuAAARKvXgN_kAAEAewF1H7oAABFC174.jpg'}, {'id': '58707', 'timesSize': 9, 'faceSize': 111, 'faceUrl': '/ifstore011241/M00/01/EB/wKgL8VqgtWOIElhhAAAlt229TkwAAD_DgMzZusAACXP636.jpg'}, {'id': '58709', 'timesSize': 5, 'faceSize': 10, 'faceUrl': '/ifstore011241/M00/01/ED/wKgL8VqjWFOIL5KbAAAUeyp9bIMAAD_vwF12TQAABST841.jpg'}, {'id': '58711', 'timesSize': 6, 'faceSize': 67, 'faceUrl': '/ifstore011241/M00/01/ED/wKgL8VqjWFOIQNlFAAAQoigHDNIAAD_vwF1sh4AABC6606.jpg'}, {'id': '58713', 'timesSize': 4, 'faceSize': 7, 'faceUrl': '/ifstore011241/M00/01/EF/wKgL8Vql-2OIIzH6AAARmQCQcP0AAEAewGhRasAABGx080.jpg'}, {'id': '58715', 'timesSize': 8, 'faceSize': 81, 'faceUrl': '/ifstore011241/M00/01/ED/wKgL8VqjWFSIZ_8MAAAX6p9hwtsAAD_vwGC-bEAABgC858.jpg'}, {'id': '58717', 'timesSize': 2, 'faceSize': 2, 'faceUrl': '/ifstore011241/M00/01/EE/wKgL8VqkqW-IMrPpAAAT-4yWjrkAAEAJQB08s0AABQT804.jpg'}, {'id': '58719', 'timesSize': 8, 'faceSize': 130, 'faceUrl': '/ifstore011241/M00/01/EE/wKgL8VqkqWuITVqYAAAWh8Wv3AAAAEAJQBeEnQAABaf166.jpg'}, {'id': '58721', 'timesSize': 6, 'faceSize': 35, 'faceUrl': '/ifstore011241/M00/01/EA/wKgL8VqfY2qISrXMAAALX6duEJEAAD-xgPyqygAAAt3950.jpg'}, {'id': '58723', 'timesSize': 2, 'faceSize': 2, 'faceUrl': '/ifstore011241/M00/01/EE/wKgL8VqkqdmILnBIAAAUgNGpa8gAAEAJQGrq_MAABSY413.jpg'}, {'id': '58724', 'timesSize': 3, 'faceSize': 3, 'faceUrl': '/ifstore011241/M00/01/EF/wKgL8Vql-uiIBqlOAAAX_JKYBnoAAEAewC9-0wAABgU434.jpg'}, {'id': '58726', 'timesSize': 6, 'faceSize': 20, 'faceUrl': '/ifstore011241/M00/01/EA/wKgL8VqfY2qINr2yAAAIrqajc2QAAD-xgPsRXoAAAjG323.jpg'}, {'id': '58728', 'timesSize': 3, 'faceSize': 6, 'faceUrl': '/ifstore011241/M00/01/EE/wKgL8VqkqWWIaKEHAAALodx2-wcAAEAJAP_BGYAAAu5570.jpg'}, {'id': '58732', 'timesSize': 5, 'faceSize': 8, 'faceUrl': '/ifstore011241/M00/01/EA/wKgL8VqfY2OIIApoAAAQPMLaeX4AAD-xgO9SQkAABBU186.jpg'}, {'id': '58734', 'timesSize': 6, 'faceSize': 39, 'faceUrl': '/ifstore011241/M00/01/EB/wKgL8VqgtPCINBCgAAAttdMAS_wAAD_DgJ2UREAAC3N986.jpg'}, {'id': '58738', 'timesSize': 3, 'faceSize': 7, 'faceUrl': '/ifstore011241/M00/01/EC/wKgL8VqiBySIdFpgAAAcNcen85sAAD_ZwPbrugAABxN920.jpg'}, {'id': '58741', 'timesSize': 4, 'faceSize': 8, 'faceUrl': '/ifstore011241/M00/01/EF/wKgL8Vql-2GIeqbJAABBqXdz2B8AAEAewGVVOgAAEHB663.jpg'}, {'id': '58744', 'timesSize': 3, 'faceSize': 5, 'faceUrl': '/ifstore011241/M00/01/ED/wKgL8VqjWGyIIR-MAAAJZ-0Lj7IAAD_vwHRaQEAAAl_505.jpg'}, {'id': '58745', 'timesSize': 6, 'faceSize': 27, 'faceUrl': '/ifstore011241/M00/01/ED/wKgL8VqjWGyILYA0AAAJz2N4__8AAD_vwHRgCYAAAnn626.jpg'}, {'id': '58749', 'timesSize': 9, 'faceSize': 34, 'faceUrl': '/ifstore011241/M00/01/EB/wKgL8VqgtXyIfosqAAAQSP2ovBgAAD_DgNQygAAABBg265.jpg'}, {'id': '58751', 'timesSize': 5, 'faceSize': 5, 'faceUrl': '/ifstore011241/M00/01/EA/wKgL8VqfZCqIPV-9AAAUI2P5aJkAAD-xwIT8t0AABQ7632.jpg'}, {'id': '58753', 'timesSize': 5, 'faceSize': 22, 'faceUrl': '/ifstore011241/M00/01/EA/wKgL8VqfY1uIExCOAAAQrcHSRToAAD-xgOBWmYAABDF702.jpg'}, {'id': '58755', 'timesSize': 8, 'faceSize': 101, 'faceUrl': '/ifstore011241/M00/01/EA/wKgL8VqfZCyIMeSaAAATTugwy40AAD-xwIn0IQAABNm948.jpg'}, {'id': '58757', 'timesSize': 9, 'faceSize': 35, 'faceUrl': '/ifstore011241/M00/01/EA/wKgL8VqfZC2IFjZRAAAjOJQeTrAAAD-xwIyeF8AACNQ107.jpg'}, {'id': '58759', 'timesSize': 5, 'faceSize': 13, 'faceUrl': '/ifstore011241/M00/01/EB/wKgL8VqgtYGIBPzPAAA2UQgaLgYAAD_DgNhki8AADZp643.jpg'}, {'id': '58761', 'timesSize': 9, 'faceSize': 79, 'faceUrl': '/ifstore011241/M00/01/EE/wKgL8VqkqjCIB47lAAAfYu9iMkcAAEAJQKXVHsAAB96960.jpg'}, {'id': '58767', 'timesSize': 2, 'faceSize': 2, 'faceUrl': '/ifstore011241/M00/01/EA/wKgL8VqfZDSIBP1HAAAJNftJrVEAAD-xwJKmXAAAAlN109.jpg'}, {'id': '58768', 'timesSize': 8, 'faceSize': 170, 'faceUrl': '/ifstore011241/M00/01/EE/wKgL8VqkqUyIejlsAAAW4QS6aKQAAEAJAO2V-YAABb5367.jpg'}, {'id': '58770', 'timesSize': 7, 'faceSize': 67, 'faceUrl': '/ifstore011241/M00/01/EE/wKgL8VqkqfqIPNatAAAQKXHyM0wAAEAJQIYvjQAABBB226.jpg'}, {'id': '58774', 'timesSize': 9, 'faceSize': 36, 'faceUrl': '/ifstore011241/M00/01/EF/wKgL8Vql-r-ILidYAAAYyFkORtoAAEAewB586oAABjg588.jpg'}, {'id': '58778', 'timesSize': 3, 'faceSize': 4, 'faceUrl': '/ifstore011241/M00/01/ED/wKgL8VqjWIaIbFlVAAAcQ0g6rYgAAD_vwIJWj8AABxb897.jpg'}, {'id': '58779', 'timesSize': 7, 'faceSize': 113, 'faceUrl': '/ifstore011241/M00/01/EF/wKgL8Vql-32INyjKAAATDBIK454AAEAewHULHEAABMk646.jpg'}, {'id': '58782', 'timesSize': 6, 'faceSize': 76, 'faceUrl': '/ifstore011241/M00/01/ED/wKgL8VqjWIOIAcyNAAAUU9hqOYkAAD_vwHrb7oAABRr084.jpg'}, {'id': '58787', 'timesSize': 7, 'faceSize': 11, 'faceUrl': '/ifstore011241/M00/01/EF/wKgL8Vql-rWII-HzAAAPGBUwvkQAAEAewBaskAAAA8w200.jpg'}, {'id': '58789', 'timesSize': 6, 'faceSize': 39, 'faceUrl': '/ifstore011241/M00/01/EF/wKgL8Vql-rSIc1OhAAAe8T8fVEsAAEAewBR0F4AAB8J384.jpg'}, {'id': '58790', 'timesSize': 7, 'faceSize': 68, 'faceUrl': '/ifstore011241/M00/01/EA/wKgL8VqfZEeIS0TfAAAa1N7dbFgAAD-xwKeN-kAABrs367.jpg'}, {'id': '58792', 'timesSize': 6, 'faceSize': 55, 'faceUrl': '/ifstore011241/M00/01/EF/wKgL8Vql-5iIGshuAAAXr2fE9noAAEAewIFKA8AABfH609.jpg'}, {'id': '58797', 'timesSize': 4, 'faceSize': 15, 'faceUrl': '/ifstore011241/M00/01/EB/wKgL8VqgtZGIbBL3AAAa9PKQt2EAAD_DgN1qKUAABsM720.jpg'}, {'id': '58799', 'timesSize': 2, 'faceSize': 2, 'faceUrl': '/ifstore011241/M00/01/EE/wKgL8VqkqgyIDG9nAAAbs40Jul4AAEAJQJBppsAABvL772.jpg'}, {'id': '58800', 'timesSize': 2, 'faceSize': 2, 'faceUrl': '/ifstore011241/M00/01/ED/wKgL8VqjV7SIcyhRAAAbKoF571YAAD_vwCPj8MAABtC742.jpg'}, {'id': '58801', 'timesSize': 2, 'faceSize': 2, 'faceUrl': '/ifstore011241/M00/01/EC/wKgL8VqiBxOIA9nZAAALyBDzhkUAAD_ZwPXCRoAAAvg457.jpg'}, {'id': '58804', 'timesSize': 2, 'faceSize': 2, 'faceUrl': '/ifstore011241/M00/01/EE/wKgL8VqkqTGIcKpvAAAUBPt3xB8AAEAJANl1LUAABQc078.jpg'}, {'id': '58807', 'timesSize': 6, 'faceSize': 20, 'faceUrl': '/ifstore011241/M00/01/E9/wKgL8VqeEbSIED0aAAAPZTcSc1oAAD-bgPNZAUAAA99446.jpg'}, {'id': '58810', 'timesSize': 8, 'faceSize': 143, 'faceUrl': '/ifstore011241/M00/01/EA/wKgL8VqfYy-IGzEwAAAgSZOt5NUAAD-xgLdNFMAACBh246.jpg'}, {'id': '58815', 'timesSize': 3, 'faceSize': 35, 'faceUrl': '/ifstore011241/M00/01/ED/wKgL8VqjV6eITEpuAAARoxY75jIAAD_vwB9zA8AABG7394.jpg'}, {'id': '58818', 'timesSize': 4, 'faceSize': 41, 'faceUrl': '/ifstore011241/M00/01/E9/wKgL8VqeEqSIMtr1AAANJYEGz9YAAD-bwEK3AIAAA09473.jpg'}, {'id': '58820', 'timesSize': 7, 'faceSize': 12, 'faceUrl': '/ifstore011241/M00/01/EC/wKgL8VqiByyIC-r9AAAUjFIrhLAAAD_ZwPyEhcAABSk451.jpg'}, {'id': '58822', 'timesSize': 8, 'faceSize': 26, 'faceUrl': '/ifstore011241/M00/01/EA/wKgL8VqfYySIeK_HAAAOOsxoprkAAD-xgKsqdIAAA5S855.jpg'}, {'id': '58824', 'timesSize': 7, 'faceSize': 29, 'faceUrl': '/ifstore011241/M00/01/EF/wKgL8Vql-pyIF7D9AAAP9rszaMcAAEAewA5NEEAABAO478.jpg'}, {'id': '58827', 'timesSize': 6, 'faceSize': 9, 'faceUrl': '/ifstore011241/M00/01/E9/wKgL8VqeEqeIPNQbAAAfgoy823EAAD-bwEPQFIAAB-a565.jpg'}, {'id': '58830', 'timesSize': 6, 'faceSize': 212, 'faceUrl': '/ifstore011241/M00/01/EF/wKgL8Vql-9-IWjb8AAAPXyNr7KUAAEAewKN_S8AAA93440.jpg'}, {'id': '58832', 'timesSize': 8, 'faceSize': 50, 'faceUrl': '/ifstore011241/M00/01/EA/wKgL8VqfYyKIIp-NAAAtGyVDKZoAAD-xgKiLWIAAC0z181.jpg'}, {'id': '58835', 'timesSize': 6, 'faceSize': 16, 'faceUrl': '/ifstore011241/M00/01/EE/wKgL8VqkqRqIG6JVAAAMU5ablkoAAEAJAKbU_AAAAxr089.jpg'}, {'id': '58837', 'timesSize': 3, 'faceSize': 69, 'faceUrl': '/ifstore011241/M00/01/EF/wKgL8Vql-qWIIgnvAAAxlZU_HCwAAEAewBAYOQAADGt643.jpg'}, {'id': '58840', 'timesSize': 7, 'faceSize': 101, 'faceUrl': '/ifstore011241/M00/01/EF/wKgL8Vql-76IBxhUAAAb0ijpMj8AAEAewJEesAAABvq004.jpg'}, {'id': '58842', 'timesSize': 2, 'faceSize': 4, 'faceUrl': '/ifstore011241/M00/01/EB/wKgL8VqgtJOIWXrbAAAeWryHqEYAAD_DgImlcQAAB5y531.jpg'}, {'id': '58845', 'timesSize': 4, 'faceSize': 5, 'faceUrl': '/ifstore011241/M00/01/EE/wKgL8VqkqRKIJ81jAAAQmDSIF28AAEAJAJVU84AABCw525.jpg'}, {'id': '58847', 'timesSize': 5, 'faceSize': 22, 'faceUrl': '/ifstore011241/M00/01/EE/wKgL8VqkqRKIC9bCAAAOa2GeoEEAAEAJAJGezEAAA6D894.jpg'}, {'id': '58850', 'timesSize': 6, 'faceSize': 16, 'faceUrl': '/ifstore011241/M00/01/EC/wKgL8VqiBzSIbKzvAAAn3UUzfYwAAD_ZwP8ryIAACf1460.jpg'}, {'id': '58852', 'timesSize': 8, 'faceSize': 88, 'faceUrl': '/ifstore011241/M00/01/ED/wKgL8VqjV4qIUvVbAAATHBky2ngAAD_vwBTQDQAABM0979.jpg'}, {'id': '58854', 'timesSize': 3, 'faceSize': 11, 'faceUrl': '/ifstore011241/M00/01/E8/wKgL8VqaHUWIVsvqAAAYuD-EETEAAD9rgKbWx0AABjQ131.jpg'}, {'id': '58857', 'timesSize': 6, 'faceSize': 21, 'faceUrl': '/ifstore011241/M00/01/EC/wKgL8VqiB3mIF-A_AAAkKxosIhwAAD_aADbbSAAACRD930.jpg'}, {'id': '58860', 'timesSize': 9, 'faceSize': 54, 'faceUrl': '/ifstore011241/M00/01/ED/wKgL8VqjV4iIUvKcAAAJPy-eAJkAAD_vwBE8lIAAAlX546.jpg'}, {'id': '58861', 'timesSize': 9, 'faceSize': 37, 'faceUrl': '/ifstore011241/M00/01/EE/wKgL8VqkqQWILyjJAAAT5Ejd2KIAAEAJAImyPoAABP8124.jpg'}, {'id': '58862', 'timesSize': 3, 'faceSize': 4, 'faceUrl': '/ifstore011241/M00/01/EF/wKgL8Vql-sOIc06LAAAkpid2IBsAAEAewCVPgEAACS-945.jpg'}, {'id': '58863', 'timesSize': 6, 'faceSize': 23, 'faceUrl': '/ifstore011241/M00/01/EF/wKgL8Vql-sKIFnyMAAAeNQ68yQkAAEAewCLLqAAAB5N280.jpg'}, {'id': '58864', 'timesSize': 6, 'faceSize': 290, 'faceUrl': '/ifstore011241/M00/01/EF/wKgL8Vql-_uIJNCQAAALejog5WIAAEAewLUSPAAAAuS718.jpg'}, {'id': '58866', 'timesSize': 5, 'faceSize': 7, 'faceUrl': '/ifstore011241/M00/01/EF/wKgL8Vql-7qIIPiAAAAHYE4kj9kAAEAewIovwcAAAd4039.jpg'}, {'id': '58868', 'timesSize': 2, 'faceSize': 2, 'faceUrl': '/ifstore011241/M00/01/EE/wKgL8VqkqkCIStnZAABN1b1-u2gAAEAJQKnZHoAAE3t080.jpg'}, {'id': '58869', 'timesSize': 2, 'faceSize': 39, 'faceUrl': '/ifstore011241/M00/01/EB/wKgL8VqgtcGINAmcAAALUVp9eLIAAD_DwARyGcAAAtp892.jpg'}, {'id': '58871', 'timesSize': 6, 'faceSize': 60, 'faceUrl': '/ifstore011241/M00/01/E8/wKgL8VqaHn-ILUWrAAAX5HKST6YAAD9rwD-pAMAABf8358.jpg'}, {'id': '58872', 'timesSize': 6, 'faceSize': 93, 'faceUrl': '/ifstore011241/M00/01/ED/wKgL8VqjV4OIaHaAAAAUqYXvcU4AAD_vgP_0tEAABTB677.jpg'}, {'id': '58874', 'timesSize': 9, 'faceSize': 180, 'faceUrl': '/ifstore011241/M00/01/ED/wKgL8VqjV4CIMspNAAAOGr34Q6UAAD_vgP_S9oAAA4y980.jpg'}, {'id': '58875', 'timesSize': 9, 'faceSize': 54, 'faceUrl': '/ifstore011241/M00/01/EF/wKgL8Vql-8CINE-BAAAY5UhMOw8AAEAewJRMGIAABj9503.jpg'}, {'id': '58877', 'timesSize': 7, 'faceSize': 77, 'faceUrl': '/ifstore011241/M00/01/E9/wKgL8VqeEsyIe2rNAAAfaSCKyVkAAD-bwFFyGUAAB-B121.jpg'}, {'id': '58879', 'timesSize': 9, 'faceSize': 94, 'faceUrl': '/ifstore011241/M00/01/EC/wKgL8VqiB1OIUzOYAAANeKVh110AAD_ZwP-HvAAAA2Q651.jpg'}, {'id': '58880', 'timesSize': 9, 'faceSize': 112, 'faceUrl': '/ifstore011241/M00/01/ED/wKgL8VqjWMqIUv4XAABSdAzOF-IAAD_vwK5LZEAAFKM191.jpg'}, {'id': '58882', 'timesSize': 9, 'faceSize': 43, 'faceUrl': '/ifstore011241/M00/01/EF/wKgL8Vql-8iIHXAkAAAazw02RnIAAEAewJt6hoAABrn136.jpg'}, {'id': '58884', 'timesSize': 5, 'faceSize': 5, 'faceUrl': '/ifstore011241/M00/01/EC/wKgL8VqiB1WIGflwAAAQsI5v8LwAAD_ZwP-SysAABDI937.jpg'}, {'id': '58885', 'timesSize': 8, 'faceSize': 86, 'faceUrl': '/ifstore011241/M00/01/EB/wKgL8VqgtHKIad_BAAAiqLhN9wcAAD_DgIBAo8AACLA006.jpg'}], 'errCode': 0, 'maxPage': 115, 'total': 11486}
+&lt;&lt;&lt;&lt;&lt;&lt; end test &gt;&gt;&gt;&gt;&gt;&gt;
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='ft1.3' class='none'>
+    <td class='failCase'><div class='testcase'>test1_2_</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_ft1.3')" >
+        fail</a>
+
+    <div id='div_ft1.3' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_ft1.3').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+ft1.3: &lt;&lt;&lt;&lt;&lt;&lt; start test &gt;&gt;&gt;&gt;&gt;&gt;
+{'timestamp': 1523181038349, 'status': 405, 'error': 'Method Not Allowed', 'exception': 'org.springframework.web.HttpRequestMethodNotSupportedException', 'message': "Request method 'POST' not supported", 'path': '/api/intellif/mining/analysis/community/stranger/list/page//pagesize/'}
+&lt;&lt;&lt;&lt;&lt;&lt; end test &gt;&gt;&gt;&gt;&gt;&gt;
+Traceback (most recent call last):
+  File "C:\Python36\lib\site-packages\parameterized\parameterized.py", line 392, in standalone_func
+    return func(*(a + p.args), **p.kwargs)
+  File "F:\code\pyProject\Test_interface_py_cm.py", line 32, in test1
+    self.assertEqual(r.status_code,200)
+AssertionError: 405 != 200
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt1.4' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test2</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt1.4')" >
+        pass</a>
+
+    <div id='div_pt1.4' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt1.4').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt1.4: &lt;&lt;&lt;&lt;&lt;&lt; start test &gt;&gt;&gt;&gt;&gt;&gt;
+(58645, datetime.datetime(2018, 3, 13, 9, 42, 9), datetime.datetime(2018, 3, 13, 17, 31, 1), '/ifstore011241/M00/01/E9/wKgL8VqeEjOIZe1eAAAU1nPaFOEAAD-bwCIT9oAABTu390.jpg', 0, 42502812930117722, 7, None)
+&lt;&lt;&lt;&lt;&lt;&lt; end test &gt;&gt;&gt;&gt;&gt;&gt;
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr class='passClass'>
+    <td>Test_interface_py_cm_demo.Test_interface_py_cm</td>
+    <td>3</td>
+    <td>3</td>
+    <td>0</td>
+    <td>0</td>
+    <td><a href="javascript:showClassDetail('c2',3)">Detail</a></td>
+</tr>
+
+<tr id='pt2.1' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test1_0</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt2.1')" >
+        pass</a>
+
+    <div id='div_pt2.1' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt2.1').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt2.1: &lt;&lt;&lt;&lt;&lt;&lt; start test &gt;&gt;&gt;&gt;&gt;&gt;
+{'data': [{'id': '58645', 'timesSize': 8, 'faceSize': 314, 'faceUrl': '/ifstore011241/M00/01/E9/wKgL8VqeEjOIZe1eAAAU1nPaFOEAAD-bwCIT9oAABTu390.jpg'}], 'errCode': 0, 'maxPage': 11486, 'total': 11486}
+&lt;&lt;&lt;&lt;&lt;&lt; end test &gt;&gt;&gt;&gt;&gt;&gt;
+
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt2.2' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test1_1</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt2.2')" >
+        pass</a>
+
+    <div id='div_pt2.2' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt2.2').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt2.2: &lt;&lt;&lt;&lt;&lt;&lt; start test &gt;&gt;&gt;&gt;&gt;&gt;
+{'data': [{'id': '58645', 'timesSize': 8, 'faceSize': 314, 'faceUrl': '/ifstore011241/M00/01/E9/wKgL8VqeEjOIZe1eAAAU1nPaFOEAAD-bwCIT9oAABTu390.jpg'}, {'id': '58653', 'timesSize': 9, 'faceSize': 1107, 'faceUrl': '/ifstore011241/M00/01/E9/wKgL8VqeEiGIZ6eGAAAmq_qn4tkAAD-bwBlYLIAACbD583.jpg'}, {'id': '58655', 'timesSize': 3, 'faceSize': 5, 'faceUrl': '/ifstore011241/M00/01/EE/wKgL8VqkqZuIPdoXAAAfJgAFrcEAAEAJQEvfPYAAB8-706.jpg'}, {'id': '58657', 'timesSize': 9, 'faceSize': 196, 'faceUrl': '/ifstore011241/M00/01/E8/wKgL8VqaHeeIXGl8AAAS__0V-fgAAD9rgNFD48AABMX089.jpg'}, {'id': '58661', 'timesSize': 5, 'faceSize': 6, 'faceUrl': '/ifstore011241/M00/01/EA/wKgL8VqfY52ILsiBAAAnoOhapRwAAD-xwAxQAcAACe4603.jpg'}, {'id': '58662', 'timesSize': 4, 'faceSize': 9, 'faceUrl': '/ifstore011241/M00/01/E9/wKgL8VqeEhmINemAAAAh_gewPvsAAD-bwBSC0QAACIW036.jpg'}, {'id': '58663', 'timesSize': 6, 'faceSize': 182, 'faceUrl': '/ifstore011241/M00/01/ED/wKgL8VqjWC2IVW9fAAAYFnUJaaIAAD_vwELsWYAABgu256.jpg'}, {'id': '58665', 'timesSize': 2, 'faceSize': 6, 'faceUrl': '/ifstore011241/M00/01/EE/wKgL8VqkqZSID_JnAAAPjLW4WkYAAEAJQEFMXwAAA-k144.jpg'}, {'id': '58668', 'timesSize': 3, 'faceSize': 4, 'faceUrl': '/ifstore011241/M00/01/EA/wKgL8VqfY7SIGpx4AABTcH5gdM8AAD-xwB_FzkAAFOI634.jpg'}, {'id': '58669', 'timesSize': 9, 'faceSize': 1064, 'faceUrl': '/ifstore011241/M00/01/EF/wKgL8Vql-y6IbDmVAAAg2-QWm6EAAEAewEej7oAACDz969.jpg'}, {'id': '58672', 'timesSize': 6, 'faceSize': 55, 'faceUrl': '/ifstore011241/M00/01/EC/wKgL8VqiBvGIChUlAAAdHDMp0swAAD_ZwOxOQoAAB00725.jpg'}, {'id': '58675', 'timesSize': 2, 'faceSize': 2, 'faceUrl': '/ifstore011241/M00/01/EE/wKgL8VqkqcmIYVtGAAAajoLCqNYAAEAJQGYBqsAABqm362.jpg'}, {'id': '58676', 'timesSize': 5, 'faceSize': 61, 'faceUrl': '/ifstore011241/M00/01/E9/wKgL8VqeEj6IfC3DAABE2RB7_RoAAD-bwCup4oAAETx480.jpg'}, {'id': '58677', 'timesSize': 3, 'faceSize': 4, 'faceUrl': '/ifstore011241/M00/01/EB/wKgL8VqgtTuIS8u0AAAsUwSEJFwAAD_DgL7JW4AACxr780.jpg'}, {'id': '58680', 'timesSize': 7, 'faceSize': 272, 'faceUrl': '/ifstore011241/M00/01/E9/wKgL8VqeEheIJmwyAAArHrd4ASQAAD-bwBGuZIAACs2141.jpg'}, {'id': '58684', 'timesSize': 7, 'faceSize': 57, 'faceUrl': '/ifstore011241/M00/01/E8/wKgL8VqaHfyIMjLMAAAVA6ueuLUAAD9rgOoVSEAABUb373.jpg'}, {'id': '58688', 'timesSize': 4, 'faceSize': 4, 'faceUrl': '/ifstore011241/M00/01/ED/wKgL8VqjWESIfVPrAAAJrnSDkfsAAD_vwFWa_4AAAnG331.jpg'}, {'id': '58692', 'timesSize': 2, 'faceSize': 2, 'faceUrl': '/ifstore011241/M00/01/EA/wKgL8VqfZAOICm6GAAA2Pn_ZFW0AAD-xwFuFJoAADZW911.jpg'}, {'id': '58694', 'timesSize': 7, 'faceSize': 84, 'faceUrl': '/ifstore011241/M00/01/EE/wKgL8VqkqbqIWDyaAAAbAFSy0e0AAEAJQF2n1AAABsY613.jpg'}, {'id': '58696', 'timesSize': 2, 'faceSize': 7, 'faceUrl': '/ifstore011241/M00/01/EF/wKgL8Vql-0WIYZYPAAAW3lPUxHUAAEAewFRgpkAABb2278.jpg'}, {'id': '58704', 'timesSize': 7, 'faceSize': 199, 'faceUrl': '/ifstore011241/M00/01/EF/wKgL8Vql-16Ie8BuAAARKvXgN_kAAEAewF1H7oAABFC174.jpg'}, {'id': '58707', 'timesSize': 9, 'faceSize': 111, 'faceUrl': '/ifstore011241/M00/01/EB/wKgL8VqgtWOIElhhAAAlt229TkwAAD_DgMzZusAACXP636.jpg'}, {'id': '58709', 'timesSize': 5, 'faceSize': 10, 'faceUrl': '/ifstore011241/M00/01/ED/wKgL8VqjWFOIL5KbAAAUeyp9bIMAAD_vwF12TQAABST841.jpg'}, {'id': '58711', 'timesSize': 6, 'faceSize': 67, 'faceUrl': '/ifstore011241/M00/01/ED/wKgL8VqjWFOIQNlFAAAQoigHDNIAAD_vwF1sh4AABC6606.jpg'}, {'id': '58713', 'timesSize': 4, 'faceSize': 7, 'faceUrl': '/ifstore011241/M00/01/EF/wKgL8Vql-2OIIzH6AAARmQCQcP0AAEAewGhRasAABGx080.jpg'}, {'id': '58715', 'timesSize': 8, 'faceSize': 81, 'faceUrl': '/ifstore011241/M00/01/ED/wKgL8VqjWFSIZ_8MAAAX6p9hwtsAAD_vwGC-bEAABgC858.jpg'}, {'id': '58717', 'timesSize': 2, 'faceSize': 2, 'faceUrl': '/ifstore011241/M00/01/EE/wKgL8VqkqW-IMrPpAAAT-4yWjrkAAEAJQB08s0AABQT804.jpg'}, {'id': '58719', 'timesSize': 8, 'faceSize': 130, 'faceUrl': '/ifstore011241/M00/01/EE/wKgL8VqkqWuITVqYAAAWh8Wv3AAAAEAJQBeEnQAABaf166.jpg'}, {'id': '58721', 'timesSize': 6, 'faceSize': 35, 'faceUrl': '/ifstore011241/M00/01/EA/wKgL8VqfY2qISrXMAAALX6duEJEAAD-xgPyqygAAAt3950.jpg'}, {'id': '58723', 'timesSize': 2, 'faceSize': 2, 'faceUrl': '/ifstore011241/M00/01/EE/wKgL8VqkqdmILnBIAAAUgNGpa8gAAEAJQGrq_MAABSY413.jpg'}, {'id': '58724', 'timesSize': 3, 'faceSize': 3, 'faceUrl': '/ifstore011241/M00/01/EF/wKgL8Vql-uiIBqlOAAAX_JKYBnoAAEAewC9-0wAABgU434.jpg'}, {'id': '58726', 'timesSize': 6, 'faceSize': 20, 'faceUrl': '/ifstore011241/M00/01/EA/wKgL8VqfY2qINr2yAAAIrqajc2QAAD-xgPsRXoAAAjG323.jpg'}, {'id': '58728', 'timesSize': 3, 'faceSize': 6, 'faceUrl': '/ifstore011241/M00/01/EE/wKgL8VqkqWWIaKEHAAALodx2-wcAAEAJAP_BGYAAAu5570.jpg'}, {'id': '58732', 'timesSize': 5, 'faceSize': 8, 'faceUrl': '/ifstore011241/M00/01/EA/wKgL8VqfY2OIIApoAAAQPMLaeX4AAD-xgO9SQkAABBU186.jpg'}, {'id': '58734', 'timesSize': 6, 'faceSize': 39, 'faceUrl': '/ifstore011241/M00/01/EB/wKgL8VqgtPCINBCgAAAttdMAS_wAAD_DgJ2UREAAC3N986.jpg'}, {'id': '58738', 'timesSize': 3, 'faceSize': 7, 'faceUrl': '/ifstore011241/M00/01/EC/wKgL8VqiBySIdFpgAAAcNcen85sAAD_ZwPbrugAABxN920.jpg'}, {'id': '58741', 'timesSize': 4, 'faceSize': 8, 'faceUrl': '/ifstore011241/M00/01/EF/wKgL8Vql-2GIeqbJAABBqXdz2B8AAEAewGVVOgAAEHB663.jpg'}, {'id': '58744', 'timesSize': 3, 'faceSize': 5, 'faceUrl': '/ifstore011241/M00/01/ED/wKgL8VqjWGyIIR-MAAAJZ-0Lj7IAAD_vwHRaQEAAAl_505.jpg'}, {'id': '58745', 'timesSize': 6, 'faceSize': 27, 'faceUrl': '/ifstore011241/M00/01/ED/wKgL8VqjWGyILYA0AAAJz2N4__8AAD_vwHRgCYAAAnn626.jpg'}, {'id': '58749', 'timesSize': 9, 'faceSize': 34, 'faceUrl': '/ifstore011241/M00/01/EB/wKgL8VqgtXyIfosqAAAQSP2ovBgAAD_DgNQygAAABBg265.jpg'}, {'id': '58751', 'timesSize': 5, 'faceSize': 5, 'faceUrl': '/ifstore011241/M00/01/EA/wKgL8VqfZCqIPV-9AAAUI2P5aJkAAD-xwIT8t0AABQ7632.jpg'}, {'id': '58753', 'timesSize': 5, 'faceSize': 22, 'faceUrl': '/ifstore011241/M00/01/EA/wKgL8VqfY1uIExCOAAAQrcHSRToAAD-xgOBWmYAABDF702.jpg'}, {'id': '58755', 'timesSize': 8, 'faceSize': 101, 'faceUrl': '/ifstore011241/M00/01/EA/wKgL8VqfZCyIMeSaAAATTugwy40AAD-xwIn0IQAABNm948.jpg'}, {'id': '58757', 'timesSize': 9, 'faceSize': 35, 'faceUrl': '/ifstore011241/M00/01/EA/wKgL8VqfZC2IFjZRAAAjOJQeTrAAAD-xwIyeF8AACNQ107.jpg'}, {'id': '58759', 'timesSize': 5, 'faceSize': 13, 'faceUrl': '/ifstore011241/M00/01/EB/wKgL8VqgtYGIBPzPAAA2UQgaLgYAAD_DgNhki8AADZp643.jpg'}, {'id': '58761', 'timesSize': 9, 'faceSize': 79, 'faceUrl': '/ifstore011241/M00/01/EE/wKgL8VqkqjCIB47lAAAfYu9iMkcAAEAJQKXVHsAAB96960.jpg'}, {'id': '58767', 'timesSize': 2, 'faceSize': 2, 'faceUrl': '/ifstore011241/M00/01/EA/wKgL8VqfZDSIBP1HAAAJNftJrVEAAD-xwJKmXAAAAlN109.jpg'}, {'id': '58768', 'timesSize': 8, 'faceSize': 170, 'faceUrl': '/ifstore011241/M00/01/EE/wKgL8VqkqUyIejlsAAAW4QS6aKQAAEAJAO2V-YAABb5367.jpg'}, {'id': '58770', 'timesSize': 7, 'faceSize': 67, 'faceUrl': '/ifstore011241/M00/01/EE/wKgL8VqkqfqIPNatAAAQKXHyM0wAAEAJQIYvjQAABBB226.jpg'}, {'id': '58774', 'timesSize': 9, 'faceSize': 36, 'faceUrl': '/ifstore011241/M00/01/EF/wKgL8Vql-r-ILidYAAAYyFkORtoAAEAewB586oAABjg588.jpg'}, {'id': '58778', 'timesSize': 3, 'faceSize': 4, 'faceUrl': '/ifstore011241/M00/01/ED/wKgL8VqjWIaIbFlVAAAcQ0g6rYgAAD_vwIJWj8AABxb897.jpg'}, {'id': '58779', 'timesSize': 7, 'faceSize': 113, 'faceUrl': '/ifstore011241/M00/01/EF/wKgL8Vql-32INyjKAAATDBIK454AAEAewHULHEAABMk646.jpg'}, {'id': '58782', 'timesSize': 6, 'faceSize': 76, 'faceUrl': '/ifstore011241/M00/01/ED/wKgL8VqjWIOIAcyNAAAUU9hqOYkAAD_vwHrb7oAABRr084.jpg'}, {'id': '58787', 'timesSize': 7, 'faceSize': 11, 'faceUrl': '/ifstore011241/M00/01/EF/wKgL8Vql-rWII-HzAAAPGBUwvkQAAEAewBaskAAAA8w200.jpg'}, {'id': '58789', 'timesSize': 6, 'faceSize': 39, 'faceUrl': '/ifstore011241/M00/01/EF/wKgL8Vql-rSIc1OhAAAe8T8fVEsAAEAewBR0F4AAB8J384.jpg'}, {'id': '58790', 'timesSize': 7, 'faceSize': 68, 'faceUrl': '/ifstore011241/M00/01/EA/wKgL8VqfZEeIS0TfAAAa1N7dbFgAAD-xwKeN-kAABrs367.jpg'}, {'id': '58792', 'timesSize': 6, 'faceSize': 55, 'faceUrl': '/ifstore011241/M00/01/EF/wKgL8Vql-5iIGshuAAAXr2fE9noAAEAewIFKA8AABfH609.jpg'}, {'id': '58797', 'timesSize': 4, 'faceSize': 15, 'faceUrl': '/ifstore011241/M00/01/EB/wKgL8VqgtZGIbBL3AAAa9PKQt2EAAD_DgN1qKUAABsM720.jpg'}, {'id': '58799', 'timesSize': 2, 'faceSize': 2, 'faceUrl': '/ifstore011241/M00/01/EE/wKgL8VqkqgyIDG9nAAAbs40Jul4AAEAJQJBppsAABvL772.jpg'}, {'id': '58800', 'timesSize': 2, 'faceSize': 2, 'faceUrl': '/ifstore011241/M00/01/ED/wKgL8VqjV7SIcyhRAAAbKoF571YAAD_vwCPj8MAABtC742.jpg'}, {'id': '58801', 'timesSize': 2, 'faceSize': 2, 'faceUrl': '/ifstore011241/M00/01/EC/wKgL8VqiBxOIA9nZAAALyBDzhkUAAD_ZwPXCRoAAAvg457.jpg'}, {'id': '58804', 'timesSize': 2, 'faceSize': 2, 'faceUrl': '/ifstore011241/M00/01/EE/wKgL8VqkqTGIcKpvAAAUBPt3xB8AAEAJANl1LUAABQc078.jpg'}, {'id': '58807', 'timesSize': 6, 'faceSize': 20, 'faceUrl': '/ifstore011241/M00/01/E9/wKgL8VqeEbSIED0aAAAPZTcSc1oAAD-bgPNZAUAAA99446.jpg'}, {'id': '58810', 'timesSize': 8, 'faceSize': 143, 'faceUrl': '/ifstore011241/M00/01/EA/wKgL8VqfYy-IGzEwAAAgSZOt5NUAAD-xgLdNFMAACBh246.jpg'}, {'id': '58815', 'timesSize': 3, 'faceSize': 35, 'faceUrl': '/ifstore011241/M00/01/ED/wKgL8VqjV6eITEpuAAARoxY75jIAAD_vwB9zA8AABG7394.jpg'}, {'id': '58818', 'timesSize': 4, 'faceSize': 41, 'faceUrl': '/ifstore011241/M00/01/E9/wKgL8VqeEqSIMtr1AAANJYEGz9YAAD-bwEK3AIAAA09473.jpg'}, {'id': '58820', 'timesSize': 7, 'faceSize': 12, 'faceUrl': '/ifstore011241/M00/01/EC/wKgL8VqiByyIC-r9AAAUjFIrhLAAAD_ZwPyEhcAABSk451.jpg'}, {'id': '58822', 'timesSize': 8, 'faceSize': 26, 'faceUrl': '/ifstore011241/M00/01/EA/wKgL8VqfYySIeK_HAAAOOsxoprkAAD-xgKsqdIAAA5S855.jpg'}, {'id': '58824', 'timesSize': 7, 'faceSize': 29, 'faceUrl': '/ifstore011241/M00/01/EF/wKgL8Vql-pyIF7D9AAAP9rszaMcAAEAewA5NEEAABAO478.jpg'}, {'id': '58827', 'timesSize': 6, 'faceSize': 9, 'faceUrl': '/ifstore011241/M00/01/E9/wKgL8VqeEqeIPNQbAAAfgoy823EAAD-bwEPQFIAAB-a565.jpg'}, {'id': '58830', 'timesSize': 6, 'faceSize': 212, 'faceUrl': '/ifstore011241/M00/01/EF/wKgL8Vql-9-IWjb8AAAPXyNr7KUAAEAewKN_S8AAA93440.jpg'}, {'id': '58832', 'timesSize': 8, 'faceSize': 50, 'faceUrl': '/ifstore011241/M00/01/EA/wKgL8VqfYyKIIp-NAAAtGyVDKZoAAD-xgKiLWIAAC0z181.jpg'}, {'id': '58835', 'timesSize': 6, 'faceSize': 16, 'faceUrl': '/ifstore011241/M00/01/EE/wKgL8VqkqRqIG6JVAAAMU5ablkoAAEAJAKbU_AAAAxr089.jpg'}, {'id': '58837', 'timesSize': 3, 'faceSize': 69, 'faceUrl': '/ifstore011241/M00/01/EF/wKgL8Vql-qWIIgnvAAAxlZU_HCwAAEAewBAYOQAADGt643.jpg'}, {'id': '58840', 'timesSize': 7, 'faceSize': 101, 'faceUrl': '/ifstore011241/M00/01/EF/wKgL8Vql-76IBxhUAAAb0ijpMj8AAEAewJEesAAABvq004.jpg'}, {'id': '58842', 'timesSize': 2, 'faceSize': 4, 'faceUrl': '/ifstore011241/M00/01/EB/wKgL8VqgtJOIWXrbAAAeWryHqEYAAD_DgImlcQAAB5y531.jpg'}, {'id': '58845', 'timesSize': 4, 'faceSize': 5, 'faceUrl': '/ifstore011241/M00/01/EE/wKgL8VqkqRKIJ81jAAAQmDSIF28AAEAJAJVU84AABCw525.jpg'}, {'id': '58847', 'timesSize': 5, 'faceSize': 22, 'faceUrl': '/ifstore011241/M00/01/EE/wKgL8VqkqRKIC9bCAAAOa2GeoEEAAEAJAJGezEAAA6D894.jpg'}, {'id': '58850', 'timesSize': 6, 'faceSize': 16, 'faceUrl': '/ifstore011241/M00/01/EC/wKgL8VqiBzSIbKzvAAAn3UUzfYwAAD_ZwP8ryIAACf1460.jpg'}, {'id': '58852', 'timesSize': 8, 'faceSize': 88, 'faceUrl': '/ifstore011241/M00/01/ED/wKgL8VqjV4qIUvVbAAATHBky2ngAAD_vwBTQDQAABM0979.jpg'}, {'id': '58854', 'timesSize': 3, 'faceSize': 11, 'faceUrl': '/ifstore011241/M00/01/E8/wKgL8VqaHUWIVsvqAAAYuD-EETEAAD9rgKbWx0AABjQ131.jpg'}, {'id': '58857', 'timesSize': 6, 'faceSize': 21, 'faceUrl': '/ifstore011241/M00/01/EC/wKgL8VqiB3mIF-A_AAAkKxosIhwAAD_aADbbSAAACRD930.jpg'}, {'id': '58860', 'timesSize': 9, 'faceSize': 54, 'faceUrl': '/ifstore011241/M00/01/ED/wKgL8VqjV4iIUvKcAAAJPy-eAJkAAD_vwBE8lIAAAlX546.jpg'}, {'id': '58861', 'timesSize': 9, 'faceSize': 37, 'faceUrl': '/ifstore011241/M00/01/EE/wKgL8VqkqQWILyjJAAAT5Ejd2KIAAEAJAImyPoAABP8124.jpg'}, {'id': '58862', 'timesSize': 3, 'faceSize': 4, 'faceUrl': '/ifstore011241/M00/01/EF/wKgL8Vql-sOIc06LAAAkpid2IBsAAEAewCVPgEAACS-945.jpg'}, {'id': '58863', 'timesSize': 6, 'faceSize': 23, 'faceUrl': '/ifstore011241/M00/01/EF/wKgL8Vql-sKIFnyMAAAeNQ68yQkAAEAewCLLqAAAB5N280.jpg'}, {'id': '58864', 'timesSize': 6, 'faceSize': 290, 'faceUrl': '/ifstore011241/M00/01/EF/wKgL8Vql-_uIJNCQAAALejog5WIAAEAewLUSPAAAAuS718.jpg'}, {'id': '58866', 'timesSize': 5, 'faceSize': 7, 'faceUrl': '/ifstore011241/M00/01/EF/wKgL8Vql-7qIIPiAAAAHYE4kj9kAAEAewIovwcAAAd4039.jpg'}, {'id': '58868', 'timesSize': 2, 'faceSize': 2, 'faceUrl': '/ifstore011241/M00/01/EE/wKgL8VqkqkCIStnZAABN1b1-u2gAAEAJQKnZHoAAE3t080.jpg'}, {'id': '58869', 'timesSize': 2, 'faceSize': 39, 'faceUrl': '/ifstore011241/M00/01/EB/wKgL8VqgtcGINAmcAAALUVp9eLIAAD_DwARyGcAAAtp892.jpg'}, {'id': '58871', 'timesSize': 6, 'faceSize': 60, 'faceUrl': '/ifstore011241/M00/01/E8/wKgL8VqaHn-ILUWrAAAX5HKST6YAAD9rwD-pAMAABf8358.jpg'}, {'id': '58872', 'timesSize': 6, 'faceSize': 93, 'faceUrl': '/ifstore011241/M00/01/ED/wKgL8VqjV4OIaHaAAAAUqYXvcU4AAD_vgP_0tEAABTB677.jpg'}, {'id': '58874', 'timesSize': 9, 'faceSize': 180, 'faceUrl': '/ifstore011241/M00/01/ED/wKgL8VqjV4CIMspNAAAOGr34Q6UAAD_vgP_S9oAAA4y980.jpg'}, {'id': '58875', 'timesSize': 9, 'faceSize': 54, 'faceUrl': '/ifstore011241/M00/01/EF/wKgL8Vql-8CINE-BAAAY5UhMOw8AAEAewJRMGIAABj9503.jpg'}, {'id': '58877', 'timesSize': 7, 'faceSize': 77, 'faceUrl': '/ifstore011241/M00/01/E9/wKgL8VqeEsyIe2rNAAAfaSCKyVkAAD-bwFFyGUAAB-B121.jpg'}, {'id': '58879', 'timesSize': 9, 'faceSize': 94, 'faceUrl': '/ifstore011241/M00/01/EC/wKgL8VqiB1OIUzOYAAANeKVh110AAD_ZwP-HvAAAA2Q651.jpg'}, {'id': '58880', 'timesSize': 9, 'faceSize': 112, 'faceUrl': '/ifstore011241/M00/01/ED/wKgL8VqjWMqIUv4XAABSdAzOF-IAAD_vwK5LZEAAFKM191.jpg'}, {'id': '58882', 'timesSize': 9, 'faceSize': 43, 'faceUrl': '/ifstore011241/M00/01/EF/wKgL8Vql-8iIHXAkAAAazw02RnIAAEAewJt6hoAABrn136.jpg'}, {'id': '58884', 'timesSize': 5, 'faceSize': 5, 'faceUrl': '/ifstore011241/M00/01/EC/wKgL8VqiB1WIGflwAAAQsI5v8LwAAD_ZwP-SysAABDI937.jpg'}, {'id': '58885', 'timesSize': 8, 'faceSize': 86, 'faceUrl': '/ifstore011241/M00/01/EB/wKgL8VqgtHKIad_BAAAiqLhN9wcAAD_DgIBAo8AACLA006.jpg'}], 'errCode': 0, 'maxPage': 115, 'total': 11486}
+&lt;&lt;&lt;&lt;&lt;&lt; end test &gt;&gt;&gt;&gt;&gt;&gt;
+
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt2.3' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test2</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt2.3')" >
+        pass</a>
+
+    <div id='div_pt2.3' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt2.3').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt2.3: &lt;&lt;&lt;&lt;&lt;&lt; start test &gt;&gt;&gt;&gt;&gt;&gt;
+(58645, datetime.datetime(2018, 3, 13, 9, 42, 9), datetime.datetime(2018, 3, 13, 17, 31, 1), '/ifstore011241/M00/01/E9/wKgL8VqeEjOIZe1eAAAU1nPaFOEAAD-bwCIT9oAABTu390.jpg', 0, 42502812930117722, 7, None)
+&lt;&lt;&lt;&lt;&lt;&lt; end test &gt;&gt;&gt;&gt;&gt;&gt;
+
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr class='passClass'>
+    <td>test.Test</td>
+    <td>1</td>
+    <td>1</td>
+    <td>0</td>
+    <td>0</td>
+    <td><a href="javascript:showClassDetail('c3',1)">Detail</a></td>
+</tr>
+
+<tr id='pt3.1' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_search</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt3.1')" >
+        pass</a>
+
+    <div id='div_pt3.1' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt3.1').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt3.1: Welcome to Python.org官网
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='total_row'>
+    <td>Total</td>
+    <td>8</td>
+    <td class="text text-success">7</td>
+    <td class="text text-danger">1</td>
+    <td class="text text-warning">0</td>
+    <td>&nbsp;</td>
+</tr>
+</table>
+
+<div id='ending'>&nbsp;</div>
+
+    <script type="text/javascript">
+var data = [
+	{
+		value: 0,
+		color: "#ebccd1",
+		label: "Error",
+		labelColor: 'white',
+		labelFontSize: '16'
+	},
+	{
+		value : 1,
+		color : "#faebcc",
+		label: "Fail",
+		labelColor: 'white',
+		labelFontSize: '16'
+	},
+	{
+		value : 7,
+		color : "#d6e9c6",
+		label : "Pass",
+		labelColor: 'white',
+		labelFontSize: '16'
+	}			
+]
+
+var newopts = {
+     animationSteps: 100,
+ 		animationEasing: 'easeInOutQuart',
+}
+
+//Get the context of the canvas element we want to select
+var ctx = document.getElementById("myChart").getContext("2d");
+
+var myNewChart = new Chart(ctx).Pie(data,newopts);
+
+</script>
+	
+</body>
+</html>
