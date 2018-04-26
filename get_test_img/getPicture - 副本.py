@@ -15,7 +15,6 @@ def getPicture(ip, port, username, password, database, tablename, souceid):
     cursor = db.cursor()
     cursor.execute(sql)
     data = cursor.fetchall()
-    os.system("[ -d Pic ] && rm -r Pic;mkdir Pic || mkdir Pic")
     num = 0
     for i in data:
         num += 1
@@ -23,11 +22,11 @@ def getPicture(ip, port, username, password, database, tablename, souceid):
             if ("http://") not in j:
                 j = "http://" + ip + j
                 name = j.split("/")[9].split(".")[0]
-                print("正在下载第 %d 张 %s" % (num, name + ".jpg"))
+                print("正在下载第 %d 张 %s\n" % (num, name + ".jpg"))
                 urllib.request.urlretrieve(j, ".\\Pic\\%s.jpg" % str(name))
             else:
                 name = j.split("/")[7]
-                print("正在下载第 %d 张 %s" % (num, name))
+                print("正在下载第 %d 张 %s\n" % (num, name))
                 urllib.request.urlretrieve(j, ".\\Pic\\%s" % str(name))
 
 
@@ -46,7 +45,16 @@ if __name__ == '__main__':
     table_property = [" where ((gender & 112) / 16) <= 5 ", " where ((race & 112) / 16) <= 5 ",
                       " where ((accessories & 112) / 16) <= 5 ",
                       " where ((age & 112) / 16) <= 5 ", " where ((accessories & 28672) / 4096) <= 5 "]
+    a = 0
     for tablename in tablelist:
+        a += 1
+        print("开始第%s次表名读取,表名是：%s\n"%(a,tablename))
+        b = 0
         for pro in table_property:
+            b +=1
+            print("开始第%s次条件读取,where条件是：%s\n"%(b,pro))
+            c = 0
             for souceid in cameralist:
+                c+=1
+                print("开始第%s次摄像头读取,摄像头id是：%s\n" % (c,souceid))
                 getPicture(ip, port, username, password, database, tablename, souceid)

@@ -28,4 +28,4 @@ if __name__ == '__main__':
         now = time.strftime("%Y-%m-%d %H:%M:%S")
         print("%s<<<<<<<<<<<<<<< %s 第%s次查询 >>>>>>>>>>>>>>>>>%s" % ('\n', now, s, '\n'))
         getData()
-        time.sleep(600)
+        time.sleep(6)

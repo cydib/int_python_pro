@@ -1,0 +1,7 @@
+0  0.85  xx.jpg
+1  0.99  sss.jpg
+1  0.52  xxx.jpg
+0  0.81  ddd.jpg  
+0  0.68  ddd.jpg  
+0  0.85  ddd.jpg  
+0  0.32  ddd.jpg  
